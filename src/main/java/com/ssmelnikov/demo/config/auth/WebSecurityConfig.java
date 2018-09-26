@@ -14,41 +14,12 @@ import org.springframework.security.web.csrf.HttpSessionCsrfTokenRepository;
 @EnableWebSecurity
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
-    @Autowired
-    private ChatUserDetailsService detailsService;
-
-
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http
-            .authorizeRequests()
-                .antMatchers("/resources/**","/static/**", "/signup").permitAll()
-                .anyRequest().authenticated()
-                .and()
-            .formLogin()
-                .defaultSuccessUrl("/home")
-                .loginPage("/login")
-                .permitAll()
-                .and()
-            .logout()
-                .logoutUrl("/login?logout")
-                .permitAll()
-            ;
         http
             .csrf()
                 .csrfTokenRepository(csrfTokenRepository());
     }
-
-    @Autowired
-    public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(detailsService);
-    }
-   /*@Autowired
-   public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
-       auth
-               .inMemoryAuthentication()
-               .withUser("user").password("password").roles("USER");
-   }*/
 
     private CsrfTokenRepository csrfTokenRepository() {
         HttpSessionCsrfTokenRepository repository = new HttpSessionCsrfTokenRepository();
