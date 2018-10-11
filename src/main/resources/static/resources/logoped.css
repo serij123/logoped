@@ -35,6 +35,16 @@ html {
     font-weight: 900;
 }
 
+.text-card-title {
+    font-size:2rem;
+}
+.text-card-body {
+    font-size:1.5rem;
+}
+.text-card-small {
+    font-size:1rem;
+}
+
 .text-corsiva {
     font-family: "Monotype Corsiva";
     font-style: italic;
@@ -47,6 +57,13 @@ a {
     color:green;
 }
 
+.card-body {
+    padding-top :0;
+    padding-bottom:0;
+    margin-top:0;
+    margin-bottom: 0;
+    text-align:left;
+}
 
 .bg-card {
     background-color:#DFE63F;
