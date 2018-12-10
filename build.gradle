@@ -31,5 +31,6 @@ dependencies {
 	compile('javax.servlet:jstl')
 	compile('org.springframework.boot:spring-boot-starter-tomcat')
 	compile('org.apache.tomcat.embed:tomcat-embed-jasper')
+	compile('javax.mail:mail:1.4.1')
 	testCompile('org.springframework.boot:spring-boot-starter-test')
 }
