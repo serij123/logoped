@@ -26,6 +26,7 @@ public class FileController {
             @PathVariable("file_name") String fileName,
             HttpServletResponse response) {
         final String fileNameTrimmed = fileName.replaceAll("[\\\\/;$#~\\s\\t\\n\\r]", "");
+        logger.debug("trying to get file:{}", fileNameTrimmed);
         try (InputStream is = new FileInputStream(filesDirectoryPath + fileNameTrimmed)){
             IOUtils.copy(is, response.getOutputStream());
             response.flushBuffer();

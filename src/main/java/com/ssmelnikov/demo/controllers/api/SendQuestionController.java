@@ -38,44 +38,51 @@ public class SendQuestionController {
     @Value("${smtp.subject}")
     private String subject;
 
+    @Value("${smtp.enabled}")
+    private Boolean enabled;
+
     @RequestMapping(value = "/api/send_question", method = RequestMethod.POST)
     @ResponseBody
     public ApiResponse sendAnswer(
             @RequestParam("name") String name,
             @RequestParam("email") String email,
             @RequestParam("text") String text) {
-        logger.info("user with name:{}, email:{}, sent question:{}", name, email, text);
+        if(enabled != null && enabled) {
+            logger.info("user with name:{}, email:{}, sent question:{}", name, email, text);
 
-        Properties properties = new Properties();
-        properties.put("mail.smtp.host"               , smtpServer);
-        properties.put("mail.smtp.port"               , smtpPort  );
-        properties.put("mail.smtp.auth"               , "true"     );
-        properties.put("mail.smtp.ssl.enable"         , "true"     );
-        properties.put("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
-        try {
-            Authenticator auth = new Authenticator() {
-                @Override
-                protected PasswordAuthentication getPasswordAuthentication() {
-                    return new PasswordAuthentication(username, password);
-                }
-            };
-            Session session = Session.getDefaultInstance(properties,auth);
-            session.setDebug(false);
+            Properties properties = new Properties();
+            properties.put("mail.smtp.host", smtpServer);
+            properties.put("mail.smtp.port", smtpPort);
+            properties.put("mail.smtp.auth", "true");
+            properties.put("mail.smtp.ssl.enable", "true");
+            properties.put("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
+            try {
+                Authenticator auth = new Authenticator() {
+                    @Override
+                    protected PasswordAuthentication getPasswordAuthentication() {
+                        return new PasswordAuthentication(username, password);
+                    }
+                };
+                Session session = Session.getDefaultInstance(properties, auth);
+                session.setDebug(false);
 
-            InternetAddress emailFrom = new InternetAddress(mailFrom);
-            InternetAddress emailTo   = new InternetAddress(mailTo);
-            Message message = new MimeMessage(session);
-            message.setFrom(emailFrom);
-            message.setRecipient(Message.RecipientType.TO, emailTo);
-            message.setSubject(subject);
-            message.setText("Здравствуйте! Пользователь " + name + " c e-mail " + email + " задал Вам вопрос:" + text);
-            Transport.send(message);
-        } catch (Exception e) {
-            logger.error("", e);
+                InternetAddress emailFrom = new InternetAddress(mailFrom);
+                InternetAddress emailTo = new InternetAddress(mailTo);
+                Message message = new MimeMessage(session);
+                message.setFrom(emailFrom);
+                message.setRecipient(Message.RecipientType.TO, emailTo);
+                message.setSubject(subject);
+                message.setText("Здравствуйте! Пользователь " + name + " c e-mail " + email + " задал Вам вопрос:" + text);
+                Transport.send(message);
+            } catch (Exception e) {
+                logger.error("", e);
+                return new ApiResponse(ApiResponse.INTERNAL_SERVER_CODE, "Error Occurred");
+            }
+
+            return new ApiResponse(ApiResponse.SUCCESS_CODE, ApiResponse.SUCCESS_DESC);
+        } else {
             return new ApiResponse(ApiResponse.INTERNAL_SERVER_CODE, "Error Occurred");
         }
-
-        return new ApiResponse(ApiResponse.SUCCESS_CODE, ApiResponse.SUCCESS_DESC);
     }
 
 }
