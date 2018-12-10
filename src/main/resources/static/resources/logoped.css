@@ -70,7 +70,8 @@ a {
 }
 
 .bg-white-transparent {
-    background-color:rgba(255, 255, 255, 0.8);
+    background-color:rgba(255, 255, 255, 0.9);
+    height:100%;
 }
 
 .bg-red-transparent {
@@ -78,13 +79,8 @@ a {
 }
 
 .bg {
-    /* The image used */
     background-image: url("background2.jpg");
-
-    /* Full height */
     height: 100%;
-
-    /* Center and scale the image nicely */
     background-position: center;
     background-repeat: repeat;
     background-size: contain;
@@ -116,4 +112,19 @@ a {
     left: -50px;
     width:10%;
     background-image:url('children_right.png');
+}
+
+.btnContact {
+    width: 50%;
+    border: none;
+    border-radius: 1rem;
+    padding: 1.5%;
+    background: rgba(140, 0, 0, 0.7);
+    font-weight: 600;
+    color: #fff;
+    cursor: pointer;
+}
+
+.no-close .ui-dialog-titlebar-close {
+    display: none;
 }
